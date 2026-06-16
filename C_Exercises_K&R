@@ -1,0 +1,49 @@
+#include <stdio.h>
+
+#define MAXLINE 1000
+
+void copyLine(char currLine[], char currLongestLine[]);
+// Practicing prototyping with no var names for no reason
+int readLine(char a[], int b);
+int main() {
+
+    // Var Declaration & Definition Zone: Memory Allocated //
+    int max = 0;
+    int lineLength;
+    // These are character arrays for holding the characters read from the textstream; one current and one for long term storage
+    char currLongestLine[MAXLINE];
+    char currLine[MAXLINE];
+
+    // Var Declaration & Definition Zone End //
+
+    // Read line from stdin until EOF
+    printf("Enter some lines!\n");
+    while ((lineLength = readLine(currLine, MAXLINE)) != 0)
+        if ( lineLength > max ) {
+            printf("New longest line of length %d acquired!\n", lineLength);
+            max = lineLength;
+            copyLine(currLine, currLongestLine); // What do we feed this fxn?
+        }
+    if (max > 0) // At the end of the function, print longest line found
+        printf("Longest line: %s\n", currLongestLine);
+    return 0;
+}
+
+int readLine(char currLine[], int bufferLimit) {
+    int i, currChar;
+    for (i=0; i<bufferLimit-1 && ((currChar = getchar()) != '\n' && currChar!= EOF); ++i)
+        currLine[i] = currChar;
+    // If we read a newline, assign the next char in the currString \n then iterate i to read the \0.
+    if (currChar == '\n') {
+        currLine[i] = currChar;
+        ++i;
+    };
+    currLine[i] = '\0'; // If it gets here; it has currLine[i] = \0
+    return i; 
+}
+
+void copyLine(char currLine[], char currLongestLine[]) {
+    int i = 0;
+    while ((currLongestLine[i] = currLine[i]) != '\0')
+        ++i;
+}// No need for return b/c void; compiler inserts one anyways
